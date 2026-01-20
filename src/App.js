@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import Login from "./cafe/Login";
+import Sidebar from "./cafe/Sidebar";
+import Dashboard from "./cafe/DashboardTable";
+import ManageMenu from "./cafe/ManageMenu";
+import ManageTable from "./cafe/ManageTable";
+import Billing from "./cafe/Billing";
+import Orders from "./cafe/Orders";
+
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<Login />} />
+
+      <Route path="/dashboard" element={<Sidebar />}>
+        <Route index element={<Dashboard />} />
+        <Route path="menu" element={<ManageMenu />} />
+        <Route path="tables" element={<ManageTable />} />
+        <Route path="billing" element={<Billing />} />
+        <Route path="order" element={<Orders />} />
+      </Route>
+    </Routes>
   );
 }
 
 export default App;
+

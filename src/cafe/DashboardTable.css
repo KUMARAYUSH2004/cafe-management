@@ -1,0 +1,68 @@
+.table-container {
+  margin-top: 30px;
+  position: sticky;
+}
+
+
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.dashboard-table th,
+.dashboard-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.dashboard-table th {
+  background-color: brown#f4f4f4;
+  font-weight: bold;
+  
+}
+
+.status {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+
+  
+}
+.status-table {
+  width: 100%;
+  border-collapse: collapse;
+  position:sticky
+}
+
+.status-table th,
+.status-table td {
+  padding: 14px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+
+.available {
+  background: #d4edda;
+  color: #155724;
+}
+
+.occupied {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.view-btn {
+  padding: 6px 12px;
+  border: none;
+  background: #2e6cf6;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.view-btn:hover {
+  background: #1c4ed8;
+}

@@ -1,0 +1,45 @@
+.Billing {
+  margin-left: 220px;
+  padding: 20px;
+  background-color: #f7f7f7;
+  min-height: 100vh;
+}
+
+.Billing h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.Billing input {
+  display: block;
+  width: 300px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 15px;
+}
+
+.Billing button {
+    padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.page button:hover {
+  background-color: #555;
+}
+
+@media (max-width: 768px) {
+  .page {
+    margin-left: 0;
+  }
+
+  .page input {
+    width: 100%;
+  }
+}
