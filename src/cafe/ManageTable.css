@@ -1,67 +1,345 @@
-.table-container {
-  max-width: 900px;
-  margin: 30px auto;
+/* Main Wrapper */
+.manage-wrapper {
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
+  color: #1e293b;
 }
 
-.table-container h2 {
-  margin-bottom: 15px;
+/* Header */
+.manage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
 }
 
-/* Add Button */
-.add-btn {
-  padding: 10px 15px;
-  background-color: #2563eb;
+.manage-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.subtitle {
+  color: #64748b;
+  margin: 8px 0 0;
+  font-size: 0.95rem;
+}
+
+/* Primary Button */
+.primary-btn {
+  background-color: #3b82f6;
   color: white;
   border: none;
-  border-radius: 6px;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
   cursor: pointer;
-  margin-bottom: 20px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.add-btn:hover {
-  background-color: #1e40af;
+.primary-btn:hover {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px -2px rgba(59, 130, 246, 0.4);
 }
 
-/* Grid */
+/* Grid Layout */
 .table-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 25px;
+  animation: fadeIn 0.4s ease;
 }
 
-/* Card */
-.table-card {
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Card Styling */
+.manage-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  padding: 24px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 2px solid transparent;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.manage-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Status Border Colors */
+.manage-card.available {
+  border-color: #86efac;
+}
+
+.manage-card.occupied {
+  border-color: #fca5a5;
+}
+
+.manage-card.reserved {
+  border-color: #fde047;
+}
+
+.manage-card.cleaning {
+  border-color: #e2e8f0;
+  border-style: dashed;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.card-header h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.2rem;
+  font-weight: 700;
+  flex: 1;
   text-align: center;
 }
 
-/* Status */
-.status {
-  font-weight: bold;
-  margin: 10px 0;
+.table-type-icon {
+  font-size: 1.4rem;
+  filter: grayscale(1);
+  opacity: 0.6;
 }
 
-.available {
-  color: green;
-}
-
-.occupied {
-  color: red;
-}
-
-/* Status Button */
-.table-card button {
-  padding: 8px 12px;
+.delete-btn {
+  background: #fff1f2;
+  color: #e11d48;
   border: none;
-  background-color: #7b1d1d;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.delete-btn:hover {
+  background: #e11d48;
   color: white;
-  border-radius: 6px;
+}
+
+/* Card Body & Visuals */
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  flex: 1;
+}
+
+.capacity-visual {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 10px;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.seat-dot {
+  width: 12px;
+  height: 12px;
+  background-color: #cbd5e1;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.manage-card.occupied .seat-dot {
+  background-color: #ef4444;
+}
+
+.manage-card.available .seat-dot {
+  background-color: #22c55e;
+}
+
+.manage-card.reserved .seat-dot {
+  background-color: #eab308;
+}
+
+.plus-seat {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: bold;
+  align-self: center;
+}
+
+.capacity-text {
+  text-align: center;
+  color: #64748b;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Status Control */
+.status-control select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  appearance: none;
+  /* simple fix, custom arrow would be better but simple is fine */
+}
+
+/* QR Code Button */
+.qr-btn {
+  background: white;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  padding: 8px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: auto;
+}
+
+.qr-btn:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+  background: #eff6ff;
+}
+
+/* Empty State */
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px;
+  background: white;
+  border-radius: 16px;
+  border: 2px dashed #e2e8f0;
+  color: #64748b;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.empty-state h3 {
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+/* Modal Styling (Reused patterns) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  animation: fadeIn 0.2s ease;
+}
+
+.confirm-modal {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.confirm-modal h3 {
+  margin-top: 0;
+  color: #1e293b;
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.modal-actions button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: white;
+  font-weight: 600;
   cursor: pointer;
 }
 
-.table-card button:hover {
-  background-color: #5c1515;
+.modal-actions .save-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+}
+
+.modal-actions .save-btn:hover {
+  background: #2563eb;
 }

@@ -1,14 +1,15 @@
-import { NavLink, Outlet,useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { endSession } from "../utils/auth";
 import "./Sidebar.css";
 function Sidebar() {
   const navigate = useNavigate();
-   const handleLogout = () => {
-    localStorage.clear();
-    navigate("/login");
+  const handleLogout = () => {
+    endSession();
+    navigate("/");
   };
   return (
-  <div className="layout">
-      
+    <div className="layout">
+
       <aside className="sidebar">
         <div className="sidebar-header">
           Cafe ☕
@@ -34,10 +35,10 @@ function Sidebar() {
           <NavLink to="/dashboard/billing" className="menu-link">
             Billing
           </NavLink>
-            <button className="logout-btn" onClick={handleLogout}>
-          Logout
-        </button>
-           
+          <button className="logout-btn" onClick={handleLogout}>
+            Logout
+          </button>
+
         </nav>
 
         <div className="sidebar-footer">
