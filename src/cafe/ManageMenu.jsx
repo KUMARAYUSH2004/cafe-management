@@ -77,6 +77,7 @@ function MenuManagement() {
   // Save to LS whenever menu changes
   React.useEffect(() => {
     localStorage.setItem("cafe-menu", JSON.stringify(menu));
+
   }, [menu]);
 
   const [selectedItems, setSelectedItems] = useState([]);
