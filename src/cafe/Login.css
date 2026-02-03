@@ -52,6 +52,39 @@ body {
   box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
 }
 
+/* Password container relative positioning */
+.password-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Make sure the input inside the container doesn't have bottom margin that messes up spacing since container has it */
+.password-container input {
+  margin-bottom: 0;
+  padding-right: 45px;
+  /* Make space for the icon */
+}
+
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.2rem;
+  user-select: none;
+  background: transparent;
+  border: none;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.password-toggle-icon:hover {
+  opacity: 1;
+}
+
+
 .login-box button {
   width: 100%;
   padding: 15px;

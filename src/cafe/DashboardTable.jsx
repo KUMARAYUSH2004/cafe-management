@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./DashboardTable.css";
+import { defaultMenu } from "./menuData";
 
 const DashboardTable = () => {
   const [tables, setTables] = useState([]);
+  const [menu, setMenu] = useState([]);
   const [stats, setStats] = useState({
     orders: 0,
     revenue: 0,
@@ -16,6 +18,26 @@ const DashboardTable = () => {
     // Load Tables
     const savedTables = JSON.parse(localStorage.getItem("tables")) || [];
     setTables(savedTables);
+
+    // Load Menu with Image Backfill
+    const savedMenu = JSON.parse(localStorage.getItem("cafe-menu")) || [];
+
+    const updatedMenu = savedMenu.length > 0 ? savedMenu.map(item => {
+      if (!item.image || item.image.trim() === "") {
+        const defaultItem = defaultMenu.find(d => d.id === item.id);
+        if (defaultItem) {
+          return { ...item, image: defaultItem.image };
+        }
+      }
+      return item;
+    }) : defaultMenu;
+
+    setMenu(updatedMenu);
+
+    // Also save back to LS if we filled in missing bits, though doing it on render is enough for display
+    if (JSON.stringify(updatedMenu) !== JSON.stringify(savedMenu)) {
+      localStorage.setItem("cafe-menu", JSON.stringify(updatedMenu));
+    }
 
     // Load Orders
     const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
@@ -110,6 +132,29 @@ const DashboardTable = () => {
             )}
           </tbody>
         </table>
+      </div>
+
+      <div className="table-card" style={{ marginTop: "30px" }}>
+        <div className="table-header">
+          <h2>Menu Overview</h2>
+        </div>
+        <div className="dashboard-menu-grid">
+          {menu.length === 0 ? (
+            <p style={{ padding: "20px", textAlign: "center", color: "#64748b" }}>No menu items found.</p>
+          ) : (
+            menu.slice(0, 8).map((item) => (
+              <div key={item.id} className="dashboard-menu-item">
+                <div className="menu-item-img">
+                  {item.image ? <img src={item.image} alt={item.name} /> : <span className="placeholder">{item.name.charAt(0)}</span>}
+                </div>
+                <div className="menu-item-info">
+                  <h4>{item.name}</h4>
+                  <p>₹{item.price}</p>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );

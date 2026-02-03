@@ -1,77 +1,27 @@
 import React, { useState } from "react";
 import "./ManageMenu.css"; // Ensure CSS is imported
 
+import { defaultMenu } from "./menuData";
+
 function MenuManagement() {
-  // Initial Menu Data
-  const defaultMenu = [
-    // Coffee
-    { id: 1, name: "Espresso", price: 120, category: "Coffee", image: "", enabled: true, tax: 5 },
-    { id: 2, name: "Double Espresso", price: 160, category: "Coffee", image: "", enabled: true, tax: 5 },
-    { id: 3, name: "Americano", price: 150, category: "Coffee", image: "", enabled: true, tax: 5 },
-    { id: 4, name: "Cappuccino", price: 180, category: "Coffee", image: "", enabled: true, tax: 5 },
-    { id: 5, name: "Latte", price: 190, category: "Coffee", image: "", enabled: true, tax: 5 },
-    { id: 6, name: "Mocha", price: 210, category: "Coffee", image: "", enabled: true, tax: 5 },
-    { id: 7, name: "Macchiato", price: 170, category: "Coffee", image: "", enabled: true, tax: 5 },
-    { id: 8, name: "Flat White", price: 200, category: "Coffee", image: "", enabled: true, tax: 5 },
-    { id: 9, name: "Irish Coffee", price: 250, category: "Coffee", image: "", enabled: true, tax: 5 },
-    { id: 10, name: "Affogato", price: 220, category: "Coffee", image: "", enabled: true, tax: 5 },
-
-    // Tea
-    { id: 11, name: "Masala Chai", price: 80, category: "Tea", image: "", enabled: true, tax: 5 },
-    { id: 12, name: "Ginger Tea", price: 90, category: "Tea", image: "", enabled: true, tax: 5 },
-    { id: 13, name: "Green Tea", price: 100, category: "Tea", image: "", enabled: true, tax: 5 },
-    { id: 14, name: "Lemon Tea", price: 90, category: "Tea", image: "", enabled: true, tax: 5 },
-    { id: 15, name: "Earl Grey", price: 120, category: "Tea", image: "", enabled: true, tax: 5 },
-    { id: 16, name: "Chamomile Tea", price: 130, category: "Tea", image: "", enabled: true, tax: 5 },
-    { id: 17, name: "Iced Tea (Lemon)", price: 140, category: "Tea", image: "", enabled: true, tax: 5 },
-    { id: 18, name: "Iced Tea (Peach)", price: 150, category: "Tea", image: "", enabled: true, tax: 5 },
-
-    // Shakes & Smoothies
-    { id: 19, name: "Classic Vanilla Shake", price: 180, category: "Shakes & Smoothies", image: "", enabled: true, tax: 5 },
-    { id: 20, name: "Chocolate Shake", price: 200, category: "Shakes & Smoothies", image: "", enabled: true, tax: 5 },
-    { id: 21, name: "Strawberry Smoothie", price: 210, category: "Shakes & Smoothies", image: "", enabled: true, tax: 5 },
-    { id: 22, name: "Mango Smoothie", price: 220, category: "Shakes & Smoothies", image: "", enabled: true, tax: 5 },
-    { id: 23, name: "Oreo Shake", price: 230, category: "Shakes & Smoothies", image: "", enabled: true, tax: 5 },
-    { id: 24, name: "Cold Coffee", price: 190, category: "Shakes & Smoothies", image: "", enabled: true, tax: 5 },
-
-    // Snacks
-    { id: 25, name: "French Fries", price: 110, category: "Snacks", image: "", enabled: true, tax: 5 },
-    { id: 26, name: "Peri Peri Fries", price: 130, category: "Snacks", image: "", enabled: true, tax: 5 },
-    { id: 27, name: "Cheese Balls", price: 150, category: "Snacks", image: "", enabled: true, tax: 5 },
-    { id: 28, name: "Garlic Bread", price: 140, category: "Snacks", image: "", enabled: true, tax: 5 },
-    { id: 29, name: "Cheese Garlic Bread", price: 170, category: "Snacks", image: "", enabled: true, tax: 5 },
-    { id: 30, name: "Nachos with Salsa", price: 180, category: "Snacks", image: "", enabled: true, tax: 5 },
-    { id: 31, name: "Onion Rings", price: 160, category: "Snacks", image: "", enabled: true, tax: 5 },
-    { id: 32, name: "Veg Nuggets", price: 140, category: "Snacks", image: "", enabled: true, tax: 5 },
-
-    // Wraps & Burgers
-    { id: 33, name: "Veg Burger", price: 150, category: "Wraps & Burgers", image: "", enabled: true, tax: 5 },
-    { id: 34, name: "Cheese Burger", price: 180, category: "Wraps & Burgers", image: "", enabled: true, tax: 5 },
-    { id: 35, name: "Paneer Burger", price: 200, category: "Wraps & Burgers", image: "", enabled: true, tax: 5 },
-    { id: 36, name: "Chicken Burger", price: 220, category: "Wraps & Burgers", image: "", enabled: true, tax: 5 },
-    { id: 37, name: "Veg Wrap", price: 160, category: "Wraps & Burgers", image: "", enabled: true, tax: 5 },
-    { id: 38, name: "Paneer Wrap", price: 190, category: "Wraps & Burgers", image: "", enabled: true, tax: 5 },
-    { id: 39, name: "Mexican Wars", price: 210, category: "Wraps & Burgers", image: "", enabled: true, tax: 5 },
-
-    // Desserts
-    { id: 40, name: "Chocolate Brownie", price: 120, category: "Desserts", image: "", enabled: true, tax: 5 },
-    { id: 41, name: "Sizzling Brownie", price: 180, category: "Desserts", image: "", enabled: true, tax: 5 },
-    { id: 42, name: "Blueberry Muffin", price: 100, category: "Desserts", image: "", enabled: true, tax: 5 },
-    { id: 43, name: "Choco Chip Cookie", price: 80, category: "Desserts", image: "", enabled: true, tax: 5 },
-    { id: 44, name: "Waffle with Honey", price: 150, category: "Desserts", image: "", enabled: true, tax: 5 },
-    { id: 45, name: "Chocolate Waffle", price: 180, category: "Desserts", image: "", enabled: true, tax: 5 },
-    { id: 46, name: "Ice Cream Scoop", price: 90, category: "Desserts", image: "", enabled: true, tax: 5 },
-
-    // Combos
-    { id: 47, name: "Burger + Coke", price: 199, category: "Combos", image: "", enabled: true, tax: 5 },
-    { id: 48, name: "Pizza + Coke", price: 299, category: "Combos", image: "", enabled: true, tax: 5 },
-    { id: 49, name: "Coffee + Cookie", price: 159, category: "Combos", image: "", enabled: true, tax: 5 },
-    { id: 50, name: "Sandwich + Cold Coffee", price: 349, category: "Combos", image: "", enabled: true, tax: 5 },
-  ];
+  // Initial Menu Data from imported file
 
   const [menu, setMenu] = useState(() => {
     const saved = localStorage.getItem("cafe-menu");
-    return saved ? JSON.parse(saved) : defaultMenu;
+    if (!saved) return defaultMenu;
+
+    // Backfill missing images from defaultMenu if they exist
+    const parsed = JSON.parse(saved);
+    const updated = parsed.map(item => {
+      if (!item.image || item.image.trim() === "") {
+        const defaultItem = defaultMenu.find(d => d.id === item.id);
+        if (defaultItem) {
+          return { ...item, image: defaultItem.image };
+        }
+      }
+      return item;
+    });
+    return updated;
   });
 
   // Save to LS whenever menu changes

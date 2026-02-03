@@ -31,10 +31,10 @@ function Billing() {
     }
   };
 
-  const handleStatusChange = (billId, newStatus) => {
+  const handleStatusChange = (billId, newStatus, method = null) => {
     // 1. Update Bill Status
     const updatedBills = bills.map(b =>
-      b.id === billId ? { ...b, status: newStatus } : b
+      b.id === billId ? { ...b, status: newStatus, paymentMethod: method } : b
     );
     updateLocalStorage(updatedBills);
 
@@ -71,6 +71,30 @@ function Billing() {
     const matchesStatus = filterStatus === "All" || bill.status === filterStatus;
     return matchesSearch && matchesStatus;
   });
+
+  // Payment Modal State
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [selectedBill, setSelectedBill] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState("Cash");
+
+  const openPaymentModal = (bill) => {
+    setSelectedBill(bill);
+    setPaymentMethod("Cash");
+    setIsPaymentModalOpen(true);
+  };
+
+  const handleConfirmPayment = () => {
+    if (selectedBill) {
+      handleStatusChange(selectedBill.id, "Paid", paymentMethod);
+      setIsPaymentModalOpen(false);
+      setSelectedBill(null);
+    }
+  };
+
+  const closeModal = () => {
+    setIsPaymentModalOpen(false);
+    setSelectedBill(null);
+  };
 
   return (
     <div className="billing-container">
@@ -140,13 +164,18 @@ function Billing() {
                     <span className={`status-pill ${bill.status.toLowerCase()}`}>
                       {bill.status}
                     </span>
+                    {bill.paymentMethod && (
+                      <div className="payment-method-tag">
+                        {bill.paymentMethod === "Cash" ? "💵" : "📱"} {bill.paymentMethod}
+                      </div>
+                    )}
                   </td>
                   <td className="actions-cell">
                     {bill.status !== "Paid" && (
                       <button
                         className="btn-icon check"
                         title="Mark as Paid"
-                        onClick={() => handleStatusChange(bill.id, "Paid")}
+                        onClick={() => openPaymentModal(bill)}
                       >
                         ✓
                       </button>
@@ -168,6 +197,67 @@ function Billing() {
           </tbody>
         </table>
       </div>
+
+      {/* Payment Modal */}
+      {isPaymentModalOpen && selectedBill && (
+        <div className="modal-overlay">
+          <div className="payment-modal">
+            <div className="modal-header">
+              <h3>Complete Payment</h3>
+              <button className="close-btn" onClick={closeModal}>×</button>
+            </div>
+
+            <div className="payment-details">
+              <div className="bill-summary">
+                <p><strong>Table:</strong> {selectedBill.table}</p>
+                <p><strong>Total Amount:</strong> <span className="highlight-amount">₹{selectedBill.total}</span></p>
+              </div>
+
+              <div className="payment-method-selector">
+                <label>Select Payment Method:</label>
+                <div className="radio-group">
+                  <label className={`radio-card ${paymentMethod === 'Cash' ? 'selected' : ''}`}>
+                    <input
+                      type="radio"
+                      value="Cash"
+                      checked={paymentMethod === "Cash"}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                    />
+                    <span>💵 Cash</span>
+                  </label>
+                  <label className={`radio-card ${paymentMethod === 'Online' ? 'selected' : ''}`}>
+                    <input
+                      type="radio"
+                      value="Online"
+                      checked={paymentMethod === "Online"}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                    />
+                    <span>📱 Online (UPI)</span>
+                  </label>
+                </div>
+              </div>
+
+              <div className="payment-visual">
+                {paymentMethod === "Online" ? (
+                  <div className="qr-code-container">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=shop&pn=Cafe&am=100" alt="Payment QR" />
+                    <p>Scan to Pay Now</p>
+                  </div>
+                ) : (
+                  <div className="cash-payment-info">
+                    <div className="cash-icon">🤝</div>
+                    <p>Please collect <strong>₹{selectedBill.total}</strong> from the customer.</p>
+                  </div>
+                )}
+              </div>
+
+              <button className="confirm-pay-btn" onClick={handleConfirmPayment}>
+                Confirm Received (₹{selectedBill.total})
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

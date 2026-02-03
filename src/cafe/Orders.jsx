@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import "./Orders.css";
 
+import { defaultMenu } from "./menuData";
+
 function Orders() {
   const [menu, setMenu] = useState([]);
   const [tables, setTables] = useState([]);
@@ -13,7 +15,19 @@ function Orders() {
   useEffect(() => {
     const savedMenu = JSON.parse(localStorage.getItem("cafe-menu")) || [];
     const savedTables = JSON.parse(localStorage.getItem("tables")) || [];
-    setMenu(savedMenu);
+
+    // Backfill images if missing in saved data
+    const updatedMenu = savedMenu.length > 0 ? savedMenu.map(item => {
+      if (!item.image || item.image.trim() === "") {
+        const defaultItem = defaultMenu.find(d => d.id === item.id);
+        if (defaultItem) {
+          return { ...item, image: defaultItem.image };
+        }
+      }
+      return item;
+    }) : defaultMenu;
+
+    setMenu(updatedMenu);
     setTables(savedTables);
   }, []);
 
@@ -114,7 +128,15 @@ function Orders() {
           {filteredMenu.map(item => (
             <div key={item.id} className="pos-item-card" onClick={() => addToCart(item)}>
               <div className="item-img-placeholder">
-                {item.name.charAt(0)}
+                {item.image ? (
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                ) : (
+                  item.name.charAt(0)
+                )}
               </div>
               <div className="item-details">
                 <h4>{item.name}</h4>
