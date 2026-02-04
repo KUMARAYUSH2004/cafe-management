@@ -150,6 +150,7 @@ const DashboardTable = () => {
                 <div className="menu-item-info">
                   <h4>{item.name}</h4>
                   <p>₹{item.price}</p>
+                  
                 </div>
               </div>
             ))
