@@ -1,31 +1,19 @@
 .layout {
   display: flex;
   height: 100vh;
-  width: 100%;
-   background-color: #f4f6f8;
-     position: relative;
-  margin-left: 260px;              /* 🔴 MUST be MORE than sidebar */
-  padding: 40px;                   /* proper inner space */
-  width: calc(100% - 260px);       /* remaining width */
-  min-height: 100vh;
+  overflow: hidden;
   background-color: #f4f6f8;
-  box-sizing: border-box;
-  overflow-x: auto;
 }
 
 /* ===== SIDEBAR ===== */
 .sidebar {
-  width: 200px;
-  background:#7b1d1d;
-  color:  #fff;
+  width: 260px;
+  background: #1e293b;
+  color: #fff;
   display: flex;
   flex-direction: column;
   padding: 20px;
-  position:fixed;
-  top: 0;
-  left:0;
-  width: 240px;
-  height: 100vh;
+  flex-shrink: 0;
 }
 
 
@@ -35,7 +23,7 @@
   font-weight: bold;
   margin-bottom: 30px;
   text-align: center;
-  border-bottom: 1px solid rgba(255,255,255,0.2)
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2)
 }
 
 /* Sidebar Menu */
@@ -75,7 +63,9 @@
   text-align: center;
   color: #94a3b8;
   padding-top: 20px;
-}.logout-btn {
+}
+
+.logout-btn {
   margin: 15px;
   padding: 10px;
   background-color: #1d4ed8;
@@ -95,7 +85,17 @@
 .content {
   flex: 1;
   background-color: #f8fafc;
-  padding: 30px;
+  overflow-y: auto;
+  height: 100%;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE/Edge */
+}
+
+.content::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, Opera */
 }
 
 /* Dashboard Cards */
@@ -105,8 +105,3 @@
   border-radius: 10px;
   margin-bottom: 15px;
 }
-
-
-
-
-
