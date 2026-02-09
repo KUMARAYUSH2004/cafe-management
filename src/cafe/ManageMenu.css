@@ -7,6 +7,62 @@
     color: #1e293b;
 }
 
+@media (max-width: 768px) {
+    .manage-menu-container {
+        padding: 15px;
+    }
+
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .primary-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .bulk-action-bar {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+
+    .bulk-buttons {
+        justify-content: space-between;
+    }
+
+    .menu-item-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .menu-image {
+        width: 100%;
+        height: 150px;
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    .item-checkbox {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        margin: 0;
+    }
+
+    .menu-item-card {
+        position: relative;
+    }
+
+    .item-actions {
+        width: 100%;
+        margin-top: 15px;
+        justify-content: flex-end;
+    }
+}
+
 header {
     display: flex;
     justify-content: space-between;

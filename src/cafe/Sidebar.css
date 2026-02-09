@@ -3,6 +3,8 @@
   height: 100vh;
   overflow: hidden;
   background-color: #f4f6f8;
+  position: relative;
+  /* For absolute positioning context if needed */
 }
 
 /* ===== SIDEBAR ===== */
@@ -14,6 +16,8 @@
   flex-direction: column;
   padding: 20px;
   flex-shrink: 0;
+  transition: transform 0.3s ease-in-out;
+  z-index: 100;
 }
 
 
@@ -91,6 +95,9 @@
   /* Firefox */
   -ms-overflow-style: none;
   /* IE/Edge */
+  position: relative;
+  width: 100%;
+  /* Ensure full width */
 }
 
 .content::-webkit-scrollbar {
@@ -104,4 +111,66 @@
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 15px;
+}
+
+/* Mobile Toggle Button */
+.mobile-toggle {
+  display: none;
+  /* Hidden on desktop */
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 200;
+  background: #1e293b;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+/* Overlay for Mobile */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 90;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    height: 100%;
+    left: -280px;
+    /* Hide sidebar off-screen */
+    top: 0;
+    transition: left 0.3s ease;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  }
+
+  .sidebar.open {
+    left: 0;
+    /* Show sidebar */
+  }
+
+  .mobile-toggle {
+    display: block;
+    /* Show toggle button */
+  }
+
+  .sidebar-overlay {
+    display: block;
+    /* Show overlay when sidebar is open */
+  }
+
+  /* Add padding to content top so toggle button doesn't cover content immediately */
+  .content {
+    padding-top: 60px;
+  }
 }

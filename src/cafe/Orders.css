@@ -243,3 +243,32 @@
 .place-order-btn:hover {
   background: #059669;
 }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .pos-container {
+    flex-direction: column;
+    height: auto;
+    overflow: auto;
+  }
+
+  .menu-section {
+    flex: none;
+    height: 60vh;
+    /* Give menu some height, or let it scroll naturally if wrapper scrolls */
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .cart-section {
+    width: 100%;
+    border-left: none;
+    box-shadow: none;
+    /* Optional: Make cart sticky or just flow below */
+    flex: none;
+  }
+
+  .menu-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+}
