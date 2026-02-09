@@ -90,6 +90,8 @@
   flex: 1;
   background-color: #f8fafc;
   overflow-y: auto;
+  overflow-x: auto;
+  /* Allow horizontal scrolling */
   height: 100%;
   scrollbar-width: none;
   /* Firefox */
@@ -97,6 +99,8 @@
   /* IE/Edge */
   position: relative;
   width: 100%;
+  min-width: 0;
+  /* Important for flex item shrinking */
   /* Ensure full width */
 }
 
