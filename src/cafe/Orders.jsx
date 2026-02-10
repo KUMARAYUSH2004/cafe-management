@@ -58,7 +58,7 @@ function Orders() {
     );
   };
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const tax = Math.round(subtotal * 0.05); // 5% tax assumption
+  const tax = Math.round(subtotal * 0.05);
   const total = subtotal + tax;
   const handlePlaceOrder = () => {
     if (cart.length === 0) return alert("Cart is empty!");
@@ -80,7 +80,7 @@ function Orders() {
       t.name === selectedTable ? { ...t, status: 'Occupied' } : t
     );
     localStorage.setItem("tables", JSON.stringify(updatedTables));
-    setTables(updatedTables); // Reflect locally
+    setTables(updatedTables);
     setCart([]);
     setSelectedTable("");
     setOrderSuccess(true);
@@ -89,7 +89,7 @@ function Orders() {
 
   return (
     <div className="pos-container">
-      {/* Left: Menu Section */}
+
       <div className="menu-section">
         <header className="pos-header">
           <h2>Take Order</h2>
@@ -129,7 +129,7 @@ function Orders() {
         </div>
       </div>
 
-      {/* Right: Cart Section */}
+
       <div className="cart-section">
         <div className="cart-header">
           <h3>Current Order</h3>

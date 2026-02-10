@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./ManageMenu.css"; // Ensure CSS is imported
+import "./ManageMenu.css";
 
 import { defaultMenu } from "./menuData";
 
@@ -101,7 +101,7 @@ function MenuManagement() {
         </button>
       </header>
 
-      {/* Bulk Actions Bar */}
+
       {selectedItems.length > 0 && (
         <div className="bulk-action-bar">
           <span>{selectedItems.length} items selected</span>
@@ -112,7 +112,7 @@ function MenuManagement() {
         </div>
       )}
 
-      {/* Menu List */}
+
       <div className="menu-list">
         {categories.map((cat) => {
           const items = menu.filter((item) => item.category === cat);
@@ -167,7 +167,7 @@ function MenuManagement() {
         })}
       </div>
 
-      {/* Add/Edit Modal */}
+
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="confirm-modal" style={{ width: "500px", textAlign: "left" }}>
@@ -211,7 +211,7 @@ function MenuManagement() {
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
+
       {isDeleteModalOpen && (
         <div className="modal-overlay">
           <div className="confirm-modal">

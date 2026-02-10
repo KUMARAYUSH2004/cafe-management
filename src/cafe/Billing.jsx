@@ -97,7 +97,7 @@ function Billing() {
         </div>
       </header>
 
-      {/* Controls */}
+
       <div className="billing-controls">
         <div className="search-box">
           <input
@@ -121,7 +121,7 @@ function Billing() {
         </div>
       </div>
 
-      {/* Table */}
+
       <div className="table-wrapper">
         <table className="billing-table">
           <thead>

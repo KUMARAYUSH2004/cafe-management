@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { addUser } from "../utils/auth";
-import "./Login.css"; // Reusing Login styles for consistency
+import "./Login.css";
 
 function Signup() {
     const [name, setName] = useState("");
@@ -9,7 +9,7 @@ function Signup() {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const [role, setRole] = useState("Staff"); // Default role
+    const [role, setRole] = useState("Staff");
 
     const handleSignup = () => {
         if (!name || !username || !password) {
