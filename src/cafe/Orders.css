@@ -19,6 +19,12 @@
 
 .pos-header {
   margin-bottom: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #f1f5f9;
+  padding-top: 5px;
+  padding-bottom: 15px; /* Add some padding bottom to cover scrolling content nicely */
 }
 
 .pos-header h2 {

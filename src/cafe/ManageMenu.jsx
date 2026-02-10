@@ -108,8 +108,15 @@ function MenuManagement() {
 
   return (
     <div className="manage-menu-container" style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto" }}>
-      <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-        <h2>Menu Management</h2>
+      <header className="manage-menu-header">
+        <div>
+          <h2>Menu Management</h2>
+          <div className="header-stats" style={{ display: 'flex', gap: '15px', marginTop: '8px', fontSize: '0.9rem', color: '#64748b', fontWeight: '500' }}>
+            <span>🍔 Items: <strong style={{ color: '#1e293b' }}>{menu.length}</strong></span>
+            <span>🏷️ Categories: <strong style={{ color: '#1e293b' }}>{new Set(menu.map(i => i.category)).size}</strong></span>
+            <span>✅ Active: <strong style={{ color: '#22c55e' }}>{menu.filter(i => i.enabled).length}</strong></span>
+          </div>
+        </div>
         <button className="primary-btn" onClick={() => openModal()} style={{ padding: "10px 20px", background: "#3b82f6", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}>
           + Add New Item
         </button>

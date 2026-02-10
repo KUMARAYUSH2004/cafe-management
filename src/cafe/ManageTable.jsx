@@ -7,12 +7,30 @@ function ManageTable() {
   const [newTable, setNewTable] = useState({ name: "", capacity: "4", type: "Square" });
 
   useEffect(() => {
-    const savedTables = JSON.parse(localStorage.getItem("tables")) || [
-      { id: 1, name: "Table 1", capacity: 4, status: "Available", type: "Square" },
-      { id: 2, name: "Table 2", capacity: 2, status: "Occupied", type: "Round" },
-      { id: 3, name: "VIP 1", capacity: 6, status: "Reserved", type: "Rect" },
-    ];
-    setTables(savedTables);
+    const savedTables = JSON.parse(localStorage.getItem("tables")) || [];
+
+    // Generate dummy data if we don't have enough tables to scroll
+    if (savedTables.length <= 3) {
+      const initialTables = [
+        { id: 1, name: "Table 1", capacity: 4, status: "Available", type: "Square" },
+        { id: 2, name: "Table 2", capacity: 2, status: "Occupied", type: "Round" },
+        { id: 3, name: "VIP 1", capacity: 6, status: "Reserved", type: "Rect" },
+      ];
+
+      const dummyTables = Array.from({ length: 12 }).map((_, i) => ({
+        id: Date.now() + i,
+        name: `Table ${i + 4}`,
+        capacity: [2, 4, 6, 8][Math.floor(Math.random() * 4)],
+        status: ["Available", "Occupied", "Reserved", "Cleaning"][Math.floor(Math.random() * 4)],
+        type: ["Square", "Round", "Rect"][Math.floor(Math.random() * 3)]
+      }));
+
+      const allTables = [...initialTables, ...dummyTables];
+      setTables(allTables);
+      localStorage.setItem("tables", JSON.stringify(allTables));
+    } else {
+      setTables(savedTables);
+    }
   }, []);
 
   const saveToLocalStorage = (updatedTables) => {
@@ -62,7 +80,11 @@ function ManageTable() {
       <header className="manage-header">
         <div>
           <h2>Manage Tables</h2>
-          <p className="subtitle">Visualize and manage your floor plan</p>
+          <div className="header-stats" style={{ display: 'flex', gap: '15px', marginTop: '8px', fontSize: '0.9rem', color: '#64748b', fontWeight: '500' }}>
+            <span>📋 Total: <strong style={{ color: '#1e293b' }}>{tables.length}</strong></span>
+            <span>👥 Capacity: <strong style={{ color: '#1e293b' }}>{tables.reduce((acc, t) => acc + parseInt(t.capacity), 0)}</strong> px</span>
+            <span>🔴 Occupied: <strong style={{ color: '#ef4444' }}>{tables.filter(t => t.status === 'Occupied').length}</strong></span>
+          </div>
         </div>
         <button className="primary-btn" onClick={() => setIsModalOpen(true)}>
           + Add New Table
@@ -77,9 +99,10 @@ function ManageTable() {
             <p>Start by adding your first table to the floor plan.</p>
           </div>
         ) : (
-          tables.map((table) => (
+          tables.map((table, index) => (
             <div key={table.id} className={`manage-card ${table.status.toLowerCase()}`}>
               <div className="card-header">
+                <span className="serial-number">#{index + 1}</span>
                 <span className="table-type-icon">{table.type === 'Round' ? '⚪' : '⬜'}</span>
                 <h3>{table.name}</h3>
                 <button className="delete-btn" onClick={() => handleDelete(table.id)}>×</button>
