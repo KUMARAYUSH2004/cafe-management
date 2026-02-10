@@ -4,10 +4,7 @@
   overflow: hidden;
   background-color: #f4f6f8;
   position: relative;
-  /* For absolute positioning context if needed */
 }
-
-/* ===== SIDEBAR ===== */
 .sidebar {
   width: 260px;
   background: #1e293b;
@@ -19,9 +16,6 @@
   transition: transform 0.3s ease-in-out;
   z-index: 100;
 }
-
-
-/* Sidebar Header */
 .sidebar-header {
   font-size: 20px;
   font-weight: bold;
@@ -29,15 +23,11 @@
   text-align: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2)
 }
-
-/* Sidebar Menu */
 .sidebar-menu {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
-
-
 .menu-link {
   display: block;
   padding: 12px 15px;
@@ -47,20 +37,14 @@
   color: #fff;
   font-size: 15px;
 }
-
-/* Hover */
 .menu-link:hover {
   background-color: #1e293b;
   color: white;
 }
-
-/* Active Menu */
 .menu-link.active {
   background-color: #2563eb;
   color: white;
 }
-
-/* Sidebar Footer */
 .sidebar-footer {
   margin-top: auto;
   font-size: 12px;
@@ -68,7 +52,6 @@
   color: #94a3b8;
   padding-top: 20px;
 }
-
 .logout-btn {
   margin: 15px;
   padding: 10px;
@@ -79,48 +62,32 @@
   cursor: pointer;
   font-size: 15px;
 }
-
 .logout-btn:hover {
   background-color: red
 }
-
-
-/* ===== CONTENT ===== */
 .content {
   flex: 1;
   background-color: #f8fafc;
   overflow-y: auto;
   overflow-x: auto;
-  /* Allow horizontal scrolling */
   height: 100%;
   scrollbar-width: none;
-  /* Firefox */
   -ms-overflow-style: none;
-  /* IE/Edge */
   position: relative;
   width: 100%;
   min-width: 0;
-  /* Important for flex item shrinking */
-  /* Ensure full width */
 }
-
 .content::-webkit-scrollbar {
   display: none;
-  /* Chrome, Safari, Opera */
 }
-
-/* Dashboard Cards */
 .dashboard-card {
   background: white;
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 15px;
 }
-
-/* Mobile Toggle Button */
 .mobile-toggle {
   display: none;
-  /* Hidden on desktop */
   position: absolute;
   top: 15px;
   left: 15px;
@@ -133,8 +100,6 @@
   cursor: pointer;
   font-size: 20px;
 }
-
-/* Overlay for Mobile */
 .sidebar-overlay {
   display: none;
   position: fixed;
@@ -145,35 +110,24 @@
   background: rgba(0, 0, 0, 0.5);
   z-index: 90;
 }
-
-/* Responsive Styles */
 @media (max-width: 768px) {
   .sidebar {
     position: fixed;
     height: 100%;
     left: -280px;
-    /* Hide sidebar off-screen */
     top: 0;
     transition: left 0.3s ease;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
   }
-
   .sidebar.open {
     left: 0;
-    /* Show sidebar */
   }
-
   .mobile-toggle {
     display: block;
-    /* Show toggle button */
   }
-
   .sidebar-overlay {
     display: block;
-    /* Show overlay when sidebar is open */
   }
-
-  /* Add padding to content top so toggle button doesn't cover content immediately */
   .content {
     padding-top: 60px;
   }

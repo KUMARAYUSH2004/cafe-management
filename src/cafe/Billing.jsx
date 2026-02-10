@@ -5,11 +5,8 @@ function Billing() {
   const [bills, setBills] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("All");
-
-  // Load Bills/Orders
   useEffect(() => {
     const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
-    // Ensure all orders have a status, default to 'Pending' if not present
     const processedOrders = savedOrders.map(o => ({
       ...o,
       status: o.status || 'Pending',
@@ -22,8 +19,6 @@ function Billing() {
     setBills(updatedBills);
     localStorage.setItem("orders", JSON.stringify(updatedBills));
   };
-
-  // Actions
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this invoice record?")) {
       const updated = bills.filter(b => b.id !== id);
@@ -32,13 +27,10 @@ function Billing() {
   };
 
   const handleStatusChange = (billId, newStatus, method = null) => {
-    // 1. Update Bill Status
     const updatedBills = bills.map(b =>
       b.id === billId ? { ...b, status: newStatus, paymentMethod: method } : b
     );
     updateLocalStorage(updatedBills);
-
-    // 2. If Paid, Free up the Table
     if (newStatus === "Paid") {
       const targetBill = bills.find(b => b.id === billId);
       if (targetBill && targetBill.table) {
@@ -56,8 +48,6 @@ function Billing() {
       .filter(b => b.status === "Paid")
       .reduce((acc, curr) => acc + curr.total, 0);
   };
-
-  // Filtering
   const filteredBills = bills.filter(bill => {
     const shortId = bill.id ? bill.id.toString().slice(-6) : "";
     const tableStr = bill.table ? bill.table.toString().toLowerCase() : "";
@@ -71,8 +61,6 @@ function Billing() {
     const matchesStatus = filterStatus === "All" || bill.status === filterStatus;
     return matchesSearch && matchesStatus;
   });
-
-  // Payment Modal State
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [selectedBill, setSelectedBill] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("Cash");

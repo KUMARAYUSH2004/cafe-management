@@ -4,13 +4,10 @@ import "./ManageMenu.css"; // Ensure CSS is imported
 import { defaultMenu } from "./menuData";
 
 function MenuManagement() {
-  // Initial Menu Data from imported file
 
   const [menu, setMenu] = useState(() => {
     const saved = localStorage.getItem("cafe-menu");
     if (!saved) return defaultMenu;
-
-    // Backfill missing images from defaultMenu if they exist
     const parsed = JSON.parse(saved);
     const updated = parsed.map(item => {
       if (!item.image || item.image.trim() === "") {
@@ -23,8 +20,6 @@ function MenuManagement() {
     });
     return updated;
   });
-
-  // Save to LS whenever menu changes
   React.useEffect(() => {
     localStorage.setItem("cafe-menu", JSON.stringify(menu));
 
@@ -34,8 +29,6 @@ function MenuManagement() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
-  // Form State
   const [formData, setFormData] = useState({
     name: "",
     price: "",
@@ -44,8 +37,6 @@ function MenuManagement() {
     tax: 0,
     enabled: true
   });
-
-  // Handle Form Change
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -53,8 +44,6 @@ function MenuManagement() {
       [name]: type === "checkbox" ? checked : value,
     }));
   };
-
-  // Open Modal
   const openModal = (item = null) => {
     if (item) {
       setEditingItem(item);
@@ -65,8 +54,6 @@ function MenuManagement() {
     }
     setIsModalOpen(true);
   };
-
-  // Save Item
   const handleSave = () => {
     if (!formData.name || !formData.price) return alert("Please fill required fields");
 
@@ -77,8 +64,6 @@ function MenuManagement() {
     }
     setIsModalOpen(false);
   };
-
-  // Toggle Selection
   const toggleSelect = (id) => {
     if (selectedItems.includes(id)) {
       setSelectedItems(selectedItems.filter((itemId) => itemId !== id));
@@ -86,15 +71,11 @@ function MenuManagement() {
       setSelectedItems([...selectedItems, id]);
     }
   };
-
-  // Bulk Delete
   const handleBulkDelete = () => {
     setMenu(menu.filter((item) => !selectedItems.includes(item.id)));
     setSelectedItems([]);
     setIsDeleteModalOpen(false);
   };
-
-  // Toggle Enabled Status
   const toggleItemStatus = (id) => {
     setMenu(
       menu.map((item) =>
@@ -102,8 +83,6 @@ function MenuManagement() {
       )
     );
   };
-
-  // Group by Category
   const categories = ["Coffee", "Tea", "Shakes & Smoothies", "Snacks", "Wraps & Burgers", "Desserts", "Combos"];
 
   return (

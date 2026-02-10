@@ -1,41 +1,28 @@
-/* Global Dashboard Wrapper */
 .dashboard-wrapper {
   padding: 30px;
   background-color: #f8fafc;
-  /* Light Slate Background */
   min-height: 100vh;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
-
 @media (max-width: 768px) {
   .dashboard-wrapper {
     padding: 15px;
   }
 }
-
-/* Stats Container - Sticky & Fixed Layout */
 .stats-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
   margin-bottom: 30px;
   width: 100%;
-
-  /* Sticky Logic */
   position: sticky;
   top: 0;
   z-index: 20;
   background-color: #f8fafc;
-  /* Match wrapper to hide scrolling content */
   padding-top: 10px;
-  /* Adjust for wrapper padding if needed, or keeping it clean */
   padding-bottom: 20px;
-  /* Space before content scrolls under */
   margin-top: -10px;
-  /* Slight offset to align with top edge if wrapper has padding */
 }
-
-/* Stat Cards */
 .stat-card {
   background: #ffffff;
   border-radius: 16px;
@@ -46,12 +33,10 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
 .stat-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
-
 .stat-icon {
   font-size: 2rem;
   background-color: #f1f5f9;
@@ -62,30 +47,24 @@
   justify-content: center;
   align-items: center;
 }
-
 .stat-info h3 {
   margin: 0;
   font-size: 1.5rem;
   font-weight: 700;
   color: #1e293b;
 }
-
 .stat-info p {
   margin: 4px 0 0;
   color: #64748b;
   font-size: 0.9rem;
   font-weight: 500;
 }
-
-/* Table Card Wrapper */
 .table-card {
   background: #ffffff;
   border-radius: 16px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   overflow-x: auto;
 }
-
-/* Table Header Section */
 .table-header {
   padding: 20px 24px;
   display: flex;
@@ -93,13 +72,11 @@
   align-items: center;
   border-bottom: 1px solid #e2e8f0;
 }
-
 .table-header h2 {
   margin: 0;
   font-size: 1.25rem;
   color: #0f172a;
 }
-
 .refresh-btn {
   background-color: #fff;
   border: 1px solid #cbd5e1;
@@ -110,27 +87,21 @@
   cursor: pointer;
   transition: all 0.2s;
 }
-
 .refresh-btn:hover {
   background-color: #f8fafc;
   border-color: #94a3b8;
   color: #0f172a;
 }
-
-/* Data Table */
 .dashboard-table {
   width: 100%;
   border-collapse: collapse;
 }
-
 .dashboard-table th,
 .dashboard-table td {
   padding: 16px 24px;
   text-align: left;
   border-bottom: 1px solid #e2e8f0;
 }
-
-/* Sticky Header - Offset below stats */
 .dashboard-table th {
   background-color: #1e293b;
   color: #ffffff;
@@ -139,16 +110,12 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-
 .dashboard-table tbody tr:last-child td {
   border-bottom: none;
 }
-
 .dashboard-table tbody tr:hover {
   background-color: #f8fafc;
 }
-
-/* Status Badges */
 .status {
   padding: 6px 12px;
   border-radius: 9999px;
@@ -158,25 +125,20 @@
   align-items: center;
   gap: 6px;
 }
-
 .status-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background-color: currentColor;
 }
-
 .available {
   background-color: #dcfce7;
   color: #166534;
 }
-
 .occupied {
   background-color: #fee2e2;
   color: #991b1b;
 }
-
-/* Action Buttons */
 .view-btn {
   background-color: #3b82f6;
   color: white;
@@ -187,19 +149,15 @@
   cursor: pointer;
   transition: background-color 0.2s;
 }
-
 .view-btn:hover {
   background-color: #2563eb;
 }
-
-/* Dashboard Menu Grid */
 .dashboard-menu-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 20px;
   padding: 24px;
 }
-
 .dashboard-menu-item {
   background: white;
   border: 1px solid #e2e8f0;
@@ -207,12 +165,10 @@
   overflow: hidden;
   transition: transform 0.2s, box-shadow 0.2s;
 }
-
 .dashboard-menu-item:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
-
 .menu-item-img {
   height: 120px;
   background: #f1f5f9;
@@ -220,23 +176,19 @@
   align-items: center;
   justify-content: center;
 }
-
 .menu-item-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-
 .menu-item-img .placeholder {
   font-size: 2rem;
   color: #cbd5e1;
   font-weight: bold;
 }
-
 .menu-item-info {
   padding: 12px;
 }
-
 .menu-item-info h4 {
   margin: 0;
   font-size: 0.95rem;
@@ -245,28 +197,21 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 .menu-item-info p {
   margin: 5px 0 0;
   color: #3b82f6;
   font-weight: 600;
   font-size: 0.9rem;
 }
-
-/* Responsive adjustments */
 @media (max-width: 1024px) {
   .stats-container {
     grid-template-columns: repeat(2, 1fr);
   }
-
   .dashboard-table th {
     top: 0;
-    /* Reset sticky offset on mobile if columns wrap */
     position: static;
-    /* Or keep sticky but let it cover? Better to un-stick mostly or adjust */
   }
 }
-
 @media (max-width: 640px) {
   .stats-container {
     grid-template-columns: 1fr;

@@ -15,11 +15,8 @@ const DashboardTable = () => {
   const navigate = useNavigate();
 
   const loadDashboardData = () => {
-    // Load Tables
     const savedTables = JSON.parse(localStorage.getItem("tables")) || [];
     setTables(savedTables);
-
-    // Load Menu with Image Backfill
     const savedMenu = JSON.parse(localStorage.getItem("cafe-menu")) || [];
 
     const updatedMenu = savedMenu.length > 0 ? savedMenu.map(item => {
@@ -33,16 +30,10 @@ const DashboardTable = () => {
     }) : defaultMenu;
 
     setMenu(updatedMenu);
-
-    // Also save back to LS if we filled in missing bits, though doing it on render is enough for display
     if (JSON.stringify(updatedMenu) !== JSON.stringify(savedMenu)) {
       localStorage.setItem("cafe-menu", JSON.stringify(updatedMenu));
     }
-
-    // Load Orders
     const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
-
-    // Calculate Stats
     const totalRevenue = savedOrders.reduce((acc, order) => acc + (order.total || 0), 0);
     const pendingOrders = savedOrders.filter(o => o.status !== "Paid").length;
     const activeTablesCount = savedTables.filter(t => t.status === "Occupied").length;
@@ -57,7 +48,6 @@ const DashboardTable = () => {
 
   useEffect(() => {
     loadDashboardData();
-    // Refresh every 30 seconds to keep dashboard alive
     const interval = setInterval(loadDashboardData, 30000);
     return () => clearInterval(interval);
   }, []);

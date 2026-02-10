@@ -9,7 +9,6 @@ function ManageTable() {
   useEffect(() => {
     const savedTables = JSON.parse(localStorage.getItem("tables")) || [];
 
-    // Generate dummy data if we don't have enough tables to scroll
     if (savedTables.length <= 3) {
       const initialTables = [
         { id: 1, name: "Table 1", capacity: 4, status: "Available", type: "Square" },
@@ -68,7 +67,6 @@ function ManageTable() {
     saveToLocalStorage(updated);
   };
 
-  // Helper to render seat icons
   const renderSeats = (count) => {
     return Array.from({ length: Math.min(count, 8) }).map((_, i) => (
       <span key={i} className="seat-dot" title="Seat"></span>
@@ -137,7 +135,6 @@ function ManageTable() {
         )}
       </div>
 
-      {/* Add Table Modal */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="confirm-modal">

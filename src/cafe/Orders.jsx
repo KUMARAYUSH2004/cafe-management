@@ -10,13 +10,9 @@ function Orders() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedTable, setSelectedTable] = useState("");
   const [orderSuccess, setOrderSuccess] = useState(false);
-
-  // Load Data
   useEffect(() => {
     const savedMenu = JSON.parse(localStorage.getItem("cafe-menu")) || [];
     const savedTables = JSON.parse(localStorage.getItem("tables")) || [];
-
-    // Backfill images if missing in saved data
     const updatedMenu = savedMenu.length > 0 ? savedMenu.map(item => {
       if (!item.image || item.image.trim() === "") {
         const defaultItem = defaultMenu.find(d => d.id === item.id);
@@ -30,15 +26,11 @@ function Orders() {
     setMenu(updatedMenu);
     setTables(savedTables);
   }, []);
-
-  // Filter Categories
   const categories = ["All", ...new Set(menu.map((item) => item.category))];
   const filteredMenu =
     selectedCategory === "All"
       ? menu
       : menu.filter((item) => item.category === selectedCategory);
-
-  // Cart Logic
   const addToCart = (item) => {
     const existing = cart.find((cartItem) => cartItem.id === item.id);
     if (existing) {
@@ -65,13 +57,9 @@ function Orders() {
       }).filter(item => item.quantity > 0)
     );
   };
-
-  // Calculations
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const tax = Math.round(subtotal * 0.05); // 5% tax assumption
   const total = subtotal + tax;
-
-  // Place Order
   const handlePlaceOrder = () => {
     if (cart.length === 0) return alert("Cart is empty!");
     if (!selectedTable) return alert("Please select a table!");
@@ -86,19 +74,13 @@ function Orders() {
       date: new Date().toLocaleString(),
       status: "Preparing"
     };
-
-    // Save Order History
     const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
     localStorage.setItem("orders", JSON.stringify([newOrder, ...existingOrders]));
-
-    // Update Table Status to 'Occupied'
     const updatedTables = tables.map(t =>
       t.name === selectedTable ? { ...t, status: 'Occupied' } : t
     );
     localStorage.setItem("tables", JSON.stringify(updatedTables));
     setTables(updatedTables); // Reflect locally
-
-    // Reset
     setCart([]);
     setSelectedTable("");
     setOrderSuccess(true);
@@ -157,9 +139,9 @@ function Orders() {
             className="table-select"
           >
             <option value="">Select Table</option>
-            {tables.map(t => (
+            {tables.filter(t => t.name).map(t => (
               <option key={t.id} value={t.name}>
-                {t.name} ({t.status})
+                {t.name} - {t.status}
               </option>
             ))}
           </select>

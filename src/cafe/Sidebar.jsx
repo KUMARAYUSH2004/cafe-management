@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { endSession } from "../utils/auth";
 import "./Sidebar.css";
+
 function Sidebar() {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -23,12 +24,10 @@ function Sidebar() {
 
   return (
     <div className="layout">
-      {/* Mobile Toggle Button */}
       <button className="mobile-toggle" onClick={toggleSidebar}>
         ☰
       </button>
 
-      {/* Overlay for mobile */}
       {isSidebarOpen && <div className="sidebar-overlay" onClick={closeSidebar}></div>}
 
       <aside className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
@@ -56,16 +55,17 @@ function Sidebar() {
           <NavLink to="/dashboard/billing" className="menu-link" onClick={closeSidebar}>
             Billing
           </NavLink>
+
           <button className="logout-btn" onClick={handleLogout}>
             Logout
           </button>
-
         </nav>
 
         <div className="sidebar-footer">
           © Cafe System
         </div>
       </aside>
+
       <main className="content">
         <Outlet />
       </main>
@@ -74,4 +74,3 @@ function Sidebar() {
 }
 
 export default Sidebar;
-
