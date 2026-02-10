@@ -114,7 +114,7 @@
   background: white;
   border-radius: 12px;
   border: 1px solid #e2e8f0;
-  overflow: hidden;
+  overflow-x: auto;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
@@ -255,9 +255,49 @@
   z-index: 100;
 }
 
+@media (max-width: 768px) {
+  .billing-container {
+    padding: 15px;
+  }
+
+  .billing-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .revenue-card {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .revenue-card h3 {
+    margin: 0;
+  }
+
+  .billing-controls {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+
+  .search-box input {
+    width: 100%;
+  }
+
+  .filter-tabs {
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+}
+
 .payment-modal {
   background: white;
-  width: 450px;
+  width: 90%;
+  max-width: 450px;
   padding: 25px;
   border-radius: 16px;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
