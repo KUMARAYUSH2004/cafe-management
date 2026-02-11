@@ -1,140 +1,231 @@
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./ManageMenu.css";
 
-function ManageMenu() {
-  const [menu, setMenu] = useState([]);
-  const [item, setItem] = useState("");
-  const [price, setPrice] = useState("");
-  const [editId, setEditId] = useState(null);
-  const [history, setHistory] = useState([]);
+import { defaultMenu } from "./menuData";
 
-  // Load menu & history
-  useEffect(() => {
-    setMenu(JSON.parse(localStorage.getItem("menu")) || []);
-    setHistory(JSON.parse(localStorage.getItem("menuHistory")) || []);
-  }, []);
+function MenuManagement() {
 
-  // Save history
-  const addHistory = (action, data) => {
-    const record = {
-      action,
-      item: data.item,
-      price: data.price,
-      time: new Date().toLocaleString(),
-    };
+  const [menu, setMenu] = useState(() => {
+    const saved = localStorage.getItem("cafe-menu");
+    if (!saved) return defaultMenu;
+    const parsed = JSON.parse(saved);
+    const updated = parsed.map(item => {
+      if (!item.image || item.image.trim() === "") {
+        const defaultItem = defaultMenu.find(d => d.id === item.id);
+        if (defaultItem) {
+          return { ...item, image: defaultItem.image };
+        }
+      }
+      return item;
+    });
+    return updated;
+  });
+  React.useEffect(() => {
+    localStorage.setItem("cafe-menu", JSON.stringify(menu));
 
-    const updatedHistory = [record, ...history];
-    setHistory(updatedHistory);
-    localStorage.setItem("menuHistory", JSON.stringify(updatedHistory));
+  }, [menu]);
+
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    price: "",
+    category: "Coffee",
+    image: "",
+    tax: 0,
+    enabled: true
+  });
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
-
-  // Add / Update item
-  const saveItem = () => {
-    if (!item || !price) {
-      alert("Enter item and price");
-      return;
-    }
-
-    if (editId) {
-      // UPDATE
-      const updatedMenu = menu.map((m) =>
-        m.id === editId ? { ...m, item, price } : m
-      );
-      setMenu(updatedMenu);
-      localStorage.setItem("menu", JSON.stringify(updatedMenu));
-      addHistory("Updated", { item, price });
-      setEditId(null);
+  const openModal = (item = null) => {
+    if (item) {
+      setEditingItem(item);
+      setFormData(item);
     } else {
-      // ADD
-      const newItem = {
-        id: Date.now(),
-        item,
-        price,
-      };
-      const updatedMenu = [...menu, newItem];
-      setMenu(updatedMenu);
-      localStorage.setItem("menu", JSON.stringify(updatedMenu));
-      addHistory("Added", newItem);
+      setEditingItem(null);
+      setFormData({ name: "", price: "", category: "Coffee", image: "", tax: 0, enabled: true });
     }
-
-    setItem("");
-    setPrice("");
+    setIsModalOpen(true);
   };
+  const handleSave = () => {
+    if (!formData.name || !formData.price) return alert("Please fill required fields");
 
-  // Edit
-  const editItem = (m) => {
-    setItem(m.item);
-    setPrice(m.price);
-    setEditId(m.id);
+    if (editingItem) {
+      setMenu(menu.map((item) => (item.id === editingItem.id ? { ...formData, id: item.id } : item)));
+    } else {
+      setMenu([...menu, { ...formData, id: Date.now() }]);
+    }
+    setIsModalOpen(false);
   };
-
-  // Delete
-  const deleteItem = (id) => {
-    const deleted = menu.find((m) => m.id === id);
-    const updatedMenu = menu.filter((m) => m.id !== id);
-    setMenu(updatedMenu);
-    localStorage.setItem("menu", JSON.stringify(updatedMenu));
-    addHistory("Deleted", deleted);
+  const toggleSelect = (id) => {
+    if (selectedItems.includes(id)) {
+      setSelectedItems(selectedItems.filter((itemId) => itemId !== id));
+    } else {
+      setSelectedItems([...selectedItems, id]);
+    }
   };
+  const handleBulkDelete = () => {
+    setMenu(menu.filter((item) => !selectedItems.includes(item.id)));
+    setSelectedItems([]);
+    setIsDeleteModalOpen(false);
+  };
+  const toggleItemStatus = (id) => {
+    setMenu(
+      menu.map((item) =>
+        item.id === id ? { ...item, enabled: !item.enabled } : item
+      )
+    );
+  };
+  const categories = ["Coffee", "Tea", "Shakes & Smoothies", "Snacks", "Wraps & Burgers", "Desserts", "Combos"];
 
   return (
-    <div className="menu-page">
-      <h2>Manage Menu</h2>
-
-      {/* FORM */}
-      <div className="menu-card">
-        <input
-          placeholder="Item name"
-          value={item}
-          onChange={(e) => setItem(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Price"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-        />
-        <button onClick={saveItem}>
-          {editId ? "Update" : "Add"}
+    <div className="manage-menu-container" style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto" }}>
+      <header className="manage-menu-header">
+        <div>
+          <h2>Menu Management</h2>
+          <div className="header-stats" style={{ display: 'flex', gap: '15px', marginTop: '8px', fontSize: '0.9rem', color: '#64748b', fontWeight: '500' }}>
+            <span>🍔 Items: <strong style={{ color: '#1e293b' }}>{menu.length}</strong></span>
+            <span>🏷️ Categories: <strong style={{ color: '#1e293b' }}>{new Set(menu.map(i => i.category)).size}</strong></span>
+            <span>✅ Active: <strong style={{ color: '#22c55e' }}>{menu.filter(i => i.enabled).length}</strong></span>
+          </div>
+        </div>
+        <button className="primary-btn" onClick={() => openModal()} style={{ padding: "10px 20px", background: "#3b82f6", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}>
+          + Add New Item
         </button>
+      </header>
+
+
+      {selectedItems.length > 0 && (
+        <div className="bulk-action-bar">
+          <span>{selectedItems.length} items selected</span>
+          <div className="bulk-buttons">
+            <button className="danger" onClick={() => setIsDeleteModalOpen(true)}>Delete Selected</button>
+            <button onClick={() => setSelectedItems([])}>Cancel</button>
+          </div>
+        </div>
+      )}
+
+
+      <div className="menu-list">
+        {categories.map((cat) => {
+          const items = menu.filter((item) => item.category === cat);
+          if (items.length === 0) return null;
+
+          return (
+            <div key={cat} className="category-group">
+              <h4 className="category-title">{cat}</h4>
+              <div className="menu-items">
+                {items.map((item) => (
+                  <div key={item.id} className="menu-item-card" style={{ display: "flex", alignItems: "center", padding: "15px", background: "white", borderRadius: "8px", border: "1px solid #e2e8f0", marginBottom: "10px" }}>
+                    <input
+                      type="checkbox"
+                      className="item-checkbox"
+                      checked={selectedItems.includes(item.id)}
+                      onChange={() => toggleSelect(item.id)}
+                    />
+
+                    <div className="menu-image">
+                      {item.image ? <img src={item.image} alt={item.name} /> : <span className="placeholder-img">{item.name.charAt(0)}</span>}
+                    </div>
+
+                    <div className="menu-info">
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                        <h5 style={{ margin: 0, fontSize: "1rem" }}>{item.name}</h5>
+                        {!item.enabled && <span style={{ fontSize: "0.75rem", background: "#cbd5e1", padding: "2px 6px", borderRadius: "4px" }}>Disabled</span>}
+                      </div>
+                      <p style={{ margin: "4px 0 0", color: "#64748b", fontSize: "0.9rem" }}>
+                        ₹{item.price} <span className="tax-info">(+ {item.tax}% Tax)</span>
+                      </p>
+                    </div>
+
+                    <div className="item-actions" style={{ display: "flex", gap: "10px" }}>
+                      <button
+                        className="action-btn"
+                        onClick={() => toggleItemStatus(item.id)}
+                      >
+                        {item.enabled ? "Disable" : "Enable"}
+                      </button>
+                      <button
+                        className="action-btn edit"
+                        onClick={() => openModal(item)}
+                      >
+                        Edit
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </div>
 
-      {/* MENU LIST */}
-      <div className="menu-card">
-        <h3>Menu Items</h3>
-        {menu.map((m) => (
-          <div key={m.id} className="menu-row">
-            <span>{m.item} – ₹{m.price}</span>
-            <div>
-              <button onClick={() => editItem(m)}>Edit</button>
-              <button className="danger" onClick={() => deleteItem(m.id)}>
-                Delete
-              </button>
+
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="confirm-modal" style={{ width: "500px", textAlign: "left" }}>
+            <h3 style={{ marginBottom: "20px" }}>{editingItem ? "Edit Item" : "Add New Item"}</h3>
+
+            <div className="form-grid">
+              <div className="form-group full-width">
+                <label>Item Name</label>
+                <input name="name" value={formData.name} onChange={handleChange} style={{ padding: "8px", border: "1px solid #e2e8f0", borderRadius: "6px" }} />
+              </div>
+
+              <div className="form-group">
+                <label>Price (₹)</label>
+                <input type="number" name="price" value={formData.price} onChange={handleChange} style={{ padding: "8px", border: "1px solid #e2e8f0", borderRadius: "6px" }} />
+              </div>
+
+              <div className="form-group">
+                <label>Category</label>
+                <select name="category" value={formData.category} onChange={handleChange} style={{ padding: "8px", border: "1px solid #e2e8f0", borderRadius: "6px" }}>
+                  {categories.map(c => <option key={c}>{c}</option>)}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Tax (%)</label>
+                <input type="number" name="tax" value={formData.tax} onChange={handleChange} style={{ padding: "8px", border: "1px solid #e2e8f0", borderRadius: "6px" }} />
+              </div>
+
+              <div className="form-group full-width">
+                <label>Image URL</label>
+                <input name="image" value={formData.image} onChange={handleChange} placeholder="https://..." style={{ padding: "8px", border: "1px solid #e2e8f0", borderRadius: "6px" }} />
+                {formData.image && <img src={formData.image} alt="Preview" className="image-preview" />}
+              </div>
+            </div>
+
+            <div className="modal-actions" style={{ marginTop: "25px", justifyContent: "flex-end" }}>
+              <button onClick={() => setIsModalOpen(false)}>Cancel</button>
+              <button onClick={handleSave} style={{ background: "#3b82f6", color: "white", border: "none" }}>Save Item</button>
             </div>
           </div>
-        ))}
-      </div>
+        </div>
+      )}
 
-      {/* HISTORY */}
-      <div className="menu-card">
-        <h3>History</h3>
-        {history.length === 0 ? (
-          <p>No history yet</p>
-        ) : (
-          <ul className="history">
-            {history.map((h, i) => (
-              <li key={i}>
-                <b>{h.action}</b> {h.item} (₹{h.price}) – {h.time}
-              
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+
+      {isDeleteModalOpen && (
+        <div className="modal-overlay">
+          <div className="confirm-modal">
+            <h3>Confirm Deletion</h3>
+            <p>Are you sure you want to delete {selectedItems.length} items? This action cannot be undone.</p>
+            <div className="modal-actions">
+              <button onClick={() => setIsDeleteModalOpen(false)}>Cancel</button>
+              <button className="danger-btn" onClick={handleBulkDelete}>Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-export default ManageMenu;
-
-
+export default MenuManagement;
